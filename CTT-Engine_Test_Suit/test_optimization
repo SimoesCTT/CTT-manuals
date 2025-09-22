@@ -1,0 +1,35 @@
+import requests
+
+def test_optimization():
+    """Test optimization problems"""
+    print("Testing Optimization Problem...")
+    
+    optimization_problem = {
+        "problem_type": "convergence_optimization",
+        "description": "Find optimal ξ for maximum convergence coefficient c(ξ) = exp(-ξ²)"
+    }
+    
+    try:
+        response = requests.post(
+            "http://localhost:8000/api/v1/solve",
+            json={
+                "problem_data": optimization_problem,
+                "problem_type": "optimization"
+            },
+            timeout=20
+        )
+        
+        if response.status_code == 200:
+            result = response.json()
+            print(f"Optimization Solution: {result.get('solution')}")
+            return True
+        else:
+            print(f"Error: {response.status_code}")
+            return False
+            
+    except Exception as e:
+        print(f"Exception: {e}")
+        return False
+
+if __name__ == "__main__":
+    test_optimization()
